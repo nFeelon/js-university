@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sudoku</title>
+    <style>
+      body {
+        background-color: lightgoldenrodyellow;
+      }
+
+      #title {
+        text-align: center;
+        color: lightblue;
+        margin-top: 50px;
+        text-shadow: black 0.5px 0.5px 0.5px;
+      }
+
+      #sudoku {
+        margin: 50px auto;
+      }
+
+      #sudoku td {
+        border: 1px solid #cdcdcd;
+        background: #f8f8f8;
+        width: 50px;
+        height: 50px;
+        margin: 0;
+        text-align: center;
+        font-size: large;
+      }
+
+      #sudoku .l {
+        margin: 0;
+        padding: 0;
+      }
+
+      #sudoku input {
+        height: 30px;
+        width: 30px;
+        border: 0 none;
+        text-align: center;
+        font-size: large;
+      }
+
+      #sudoku td.error {
+        background-color: lightcoral;
+      }
+
+      #sudoku td.error2 {
+        background-color: red;
+      }
+
+      #sudoku td.complete {
+        background-color: lightyellow;
+      }
+
+      .buttons {
+        margin-top: 50px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .buttons input {
+        padding: 10px;
+        background-color: lightblue;
+        border-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="title">Крутое Судоку</h1>
+    <table id="sudoku" cellspacing="0"></table>
+    <div class="buttons">
+      <input
+        id="btn_check"
+        type="button"
+        value="Проверить"
+        onclick="sudoku.checkErrors();"
+      />
+      <input
+        id="btn_clear"
+        type="button"
+        value="Очистить"
+        onclick="sudoku.clearInputs();"
+      />
+      <input
+        id="btn_fill"
+        type="button"
+        value="Заполнить"
+        onclick="sudoku.fillTable();"
+      />
+      <input
+        id="btn_new"
+        type="button"
+        value="Новая игра"
+        onclick="sudoku.newGame()"
+      />
+    </div>
+
+    <script type="text/javascript">
+      class Sudoku {
+        constructor() {
+          this.field =
+            "0681594327597283416342671589934157268278936145156842973729318654813465792465729831";
+          this.arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        }
+
+        shuffleArray(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+          return array;
+        }
+
+        generateTable() {
+          const table = document.getElementById("sudoku");
+          let row;
+          for (let i = 1; i < 82; i++) {
+            if (i % 9 === 1) {
+              row = document.createElement("tr");
+              table.appendChild(row);
+            }
+
+            const cellContent =
+              Math.random() * 10 > 5
+                ? this.arr[this.field.substr(i, 1) - 1]
+                : '<input type="text" size="1" maxlength="1" value="">';
+            const cell = document.createElement("td");
+            cell.innerHTML = cellContent;
+            row.appendChild(cell);
+          }
+        }
+
+        fillTable() {
+          const table = document.getElementById("sudoku");
+          const cells = table.getElementsByTagName("td");
+          for (let i = 0; i < cells.length; i++) {
+            if (cells[i].innerHTML.includes("input")) {
+              const inputValue = this.arr[this.field.substr(i + 1, 1) - 1];
+              cells[
+                i
+              ].innerHTML = `<input type="text" size="1" maxlength="1" value="${inputValue}">`;
+            }
+          }
+        }
+
+        areInSameRow(element1, element2) {
+          const row1 = element1.parentNode;
+          const row2 = element2.parentNode;
+
+          return row1 === row2;
+        }
+
+        areInSameColumn(cell1, cell2) {
+          const column1 = cell1.cellIndex;
+          const column2 = cell2.cellIndex;
+
+          return column1 === column2;
+        }
+
+        checkErrors() {
+          const table = document.getElementById("sudoku");
+          const cells = table.getElementsByTagName("td");
+          let errors = [];
+          let hasErrors = false;
+
+          for (let i = 0; i < cells.length; i++) {
+            const cell = cells[i];
+            const input = cell.querySelector("input");
+
+            if (!input || !input.value) {
+              continue;
+            }
+
+            const value = parseInt(input.value);
+
+            if (
+              String(this.arr[this.field.substr(i + 1, 1) - 1]) !==
+              String(value)
+            ) {
+              errors.push(cell);
+            }
+          }
+
+          if (errors.length > 0) {
+            errors.forEach((error) => {
+              error.classList.add("error2");
+            });
+
+            const cells = table.getElementsByTagName("td");
+            for (let i = 0; i < cells.length; i++) {
+              const cell = cells[i];
+              errors.forEach((error) => {
+                if (
+                  this.areInSameRow(cell, error) ||
+                  this.areInSameColumn(cell, error)
+                ) {
+                  const input2 = error.querySelector("input");
+                  if (String(cell.innerText) == String(input2.value)) {
+                    cell.classList.add("error2");
+                  } else {
+                    cell.classList.add("error");
+                  }
+                }
+              });
+            }
+            hasErrors = true;
+          }
+
+          if (
+            !hasErrors &&
+            document.querySelectorAll('input[value=""]').length == 0
+          ) {
+            const cells = document.querySelectorAll("td");
+            cells.forEach((cell) => {
+              cell.classList.add("complete");
+            });
+          }
+        }
+
+        clearInputs() {
+          const inputs = document.querySelectorAll("#sudoku input");
+          const cells = document.querySelectorAll("td");
+          inputs.forEach((input) => {
+            input.value = "";
+          });
+          cells.forEach((cell) => {
+            if (cell.classList.contains("error")) {
+              cell.classList.remove("error");
+            }
+            if (cell.classList.contains("complete")) {
+              cell.classList.remove("complete");
+            }
+            if (cell.classList.contains("error2")) {
+              cell.classList.remove("error2");
+            }
+          });
+        }
+
+        newGame() {
+          const table = document.getElementById("sudoku");
+          table.innerHTML = "";
+          this.shuffleArray(this.arr);
+          this.generateTable();
+        }
+      }
+
+      const sudoku = new Sudoku();
+      sudoku.shuffleArray(sudoku.arr);
+      sudoku.generateTable();
+    </script>
+  </body>
+</html>
