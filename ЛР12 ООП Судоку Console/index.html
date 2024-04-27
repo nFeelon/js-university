@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sudoku</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      class Sudoku {
+        constructor() {
+          this.field =
+            "0681594327597283416342671589934157268278936145156842973729318654813465792465729831";
+          this.arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+          this.grid = [];
+          this.startGrid = [];
+        }
+
+        shuffleArray(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+          return array;
+        }
+
+        generateTable() {
+          let count = 1;
+          for (let i = 0; i < 9; i++) {
+            let row = [];
+            for (let k = 0; k < 9; k++) {
+              const cellContent =
+                Math.random() * 10 > 5
+                  ? this.arr[this.field.substr(count, 1) - 1]
+                  : " ";
+              count++;
+              row.push(cellContent);
+            }
+            this.grid.push(row);
+          }
+          this.startGrid = structuredClone(this.grid);
+        }
+
+        printTable() {
+          console.clear();
+          for (let i = 0; i < 9; i++) {
+            let str = "";
+            for (let k = 0; k < 9; k++) {
+              str = str + "[" + this.grid[i][k] + "] ";
+            }
+            console.log(str);
+          }
+        }
+
+        fillTable() {
+          let count = 1;
+          for (let i = 0; i < 9; i++) {
+            for (let k = 0; k < 9; k++) {
+              this.grid[i][k] = this.grid[i][k]==" " ? this.arr[this.field.substr(count, 1) - 1] : this.grid[i][k];
+              ++count;
+            }
+          }
+          this.printTable();
+        }
+
+        checkErrors() {
+          let errors = [];
+          let hasErrors = false;
+
+          let count = 1;
+          for (let i = 0; i < 9; i++) {
+            for (let k = 0; k < 9; k++) {
+              if(this.grid[i][k]!=this.arr[this.field.substr(count,1)-1] && this.grid[i][k]!=" ") {
+                errors.push({i,k});
+              }
+              ++count;
+            }
+          }
+
+          if (errors.length > 0) {
+            hasErrors = true;
+            errors.forEach((error) => {
+              console.log(`Ошибка в клетке: ${error.i+1}-${error.k+1}`);
+            })
+          }
+          console.log("Наличие ошибок: " + hasErrors);
+          return hasErrors;
+        }
+
+        clearInputs() {
+          this.grid = structuredClone(this.startGrid);
+          this.printTable();
+        }
+
+        setElement(x,y,n) {
+          this.grid[x-1][y-1] = n;
+          this.printTable();
+        }
+
+        newGame() {
+          this.shuffleArray(this.arr);
+          this.generateTable();
+          this.printTable();
+        }
+      }
+
+      const sudoku = new Sudoku();
+      sudoku.newGame();
+    </script>
+  </body>
+</html>
