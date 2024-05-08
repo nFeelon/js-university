@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Товары</title>
+    <style>
+      button {
+        border: 0;
+        border-radius: 10px;
+        cursor: pointer;
+        text-align: center;
+        color: white;
+        margin-bottom: 10px;
+        transition: 0.1s;
+      }
+      button:hover {
+        scale: 1.02;
+        transition: 0.1s;
+      }
+      main {
+        margin-left: 200px;
+        margin-right: 200px;
+      }
+      #productContainer {
+        display: flex;
+        padding-top: 100px;
+        flex-wrap: wrap;
+      }
+
+      .product {
+        width: calc(33.33% - 10px);
+        margin: 5px;
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .product h3 {
+        line-height: 0;
+        margin-bottom: 0;
+      }
+
+      .productN {
+        background-color: gray;
+      }
+
+      #trash {
+        background-color: #007bff;
+        width: 120px;
+        height: 40px;
+        margin-left: auto;
+        margin-right: 0;
+        float: right;
+      }
+
+      #trash:hover {
+        background-color: lightblue;
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <button type="button" id="trash">Корзина</button>
+      <div id="productContainer"></div>
+    </main>
+    <script src="main.js"></script>
+  </body>
+</html>
