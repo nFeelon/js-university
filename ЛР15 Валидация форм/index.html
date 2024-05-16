@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Форма</title>
+    <style>
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem;
+        flex-direction: column;
+        background-color: lightskyblue;
+      }
+      .form {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        max-width: 600px;
+        width: 100%;
+        background-color: lightblue;
+        padding: 50px;
+      }
+      .label {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .label > * {
+        flex: 0 0 50%;
+      }
+      .radio-btns {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .errors {
+        flex: 0 0 100% !important;
+        list-style: none;
+        padding-left: 0;
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Заполните форму:</h3>
+    <form action="" class="form">
+      <label class="label" for="">
+        <span>Фамилия</span>
+        <input type="text" id="surname"/>
+        <ul class="errors"></ul>
+      </label>
+      <label class="label" for="">
+        <span>Имя</span>
+        <input type="text" id="name"/>
+        <ul class="errors"></ul>
+      </label>
+      <label class="label" for="">
+        <span>E-mail</span>
+        <input type="text" id="email"/>
+        <ul class="errors"></ul>
+      </label>
+      <label class="label" for="">
+        <span>Телефон (0xx)xxx-xx-xx</span>
+        <input type="text" id="phone"/>
+        <ul class="errors"></ul>
+      </label>
+      <label class="label" for="">
+        <span>Город</span>
+        <select name="" id="city">
+          <option value="brest">Брест</option>
+          <option value="vitebsk">Витебск</option>
+          <option value="gomel">Гомель</option>
+          <option value="grodno">Гродно</option>
+          <option value="minsk">Минск</option>
+          <option value="mogilev">Могилев</option>
+        </select>
+        <ul class="errors"></ul>
+      </label>
+      <label class="label" for="">
+        <span>Я учусь в БГТУ</span>
+        <div class="radio-bstu">
+          <input style="justify-self: left" type="checkbox" id="bstu" />
+        </div>
+        <ul class="errors"></ul>
+      </label>
+      <div class="label" for="">
+        <span>На каком курсе Вы учитесь?</span>
+        <div class="radio-btns">
+          <label for="">
+            <span>1</span>
+            <input type="radio" name="course" value="1" checked />
+          </label>
+          <label for="">
+            <span>2</span>
+            <input type="radio" name="course" value="2" />
+          </label>
+          <label for="">
+            <span>3</span>
+            <input type="radio" name="course" value="3" />
+          </label>
+          <label for="">
+            <span>4</span>
+            <input type="radio" name="course" value="4" />
+          </label>
+        </div>
+        <ul class="errors"></ul>
+      </div>
+      <label class="label" for="">
+        <span>Расскажите о себе</span>
+        <textarea name="" rows="5" id="about"></textarea>
+        <ul class="errors"></ul>
+      </label>
+      <button type="submit">Проверить</button>
+    </form>
+    <script src="main.js"></script>
+  </body>
+</html>
